@@ -17,7 +17,7 @@ export default function Login() {
   );
 
   if (user) {
-    navigate("/dashboard");
+   navigate("/");
   }
 }, [navigate]);
 

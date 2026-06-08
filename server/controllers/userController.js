@@ -3,8 +3,9 @@ const Post = require("../models/Post");
 
 const getUserProfile = async (req, res) => {
   try {
-    const user = await User.findById(req.params.id)
-      .select("-password");
+    const user = await User.findById(
+      req.params.id
+    ).select("-password");
 
     const posts = await Post.find({
       author: req.params.id,
@@ -21,16 +22,23 @@ const getUserProfile = async (req, res) => {
   }
 };
 
-const updateUserProfile = async (req, res) => {
+const updateUserProfile=async(
+  req,
+  res
+) => {
   try {
+    if (
+      req.user._id.toString() !==
+      req.params.id
+    ) {
+      return res.status(403).json({
+        message: "Not authorized",
+      });
+    }
 
-
-    if (req.user._id.toString() !== req.params.id) {
-  return res.status(403).json({
-    message: "Not authorized",
-  });
-}
-    const user = await User.findById(req.params.id);
+    const user = await User.findById(
+      req.params.id
+    );
 
     if (!user) {
       return res.status(404).json({
@@ -45,11 +53,29 @@ const updateUserProfile = async (req, res) => {
       req.body.bio || user.bio;
 
     user.interests =
-      req.body.interests || user.interests;
+      req.body.interests ||
+      user.interests;
 
-    const updatedUser = await user.save();
+    const updatedUser =
+      await user.save();
 
     res.json(updatedUser);
+  } catch (error) {
+    res.status(500).json({
+      message: error.message,
+    });
+  }
+};
+
+const getMyPosts = async (req, res) => {
+  try {
+    const posts = await Post.find({
+      author: req.user._id,
+    })
+      .populate("author", "username")
+      .sort({ createdAt: -1 });
+
+    res.json(posts);
   } catch (error) {
     res.status(500).json({
       message: error.message,
@@ -60,4 +86,5 @@ const updateUserProfile = async (req, res) => {
 module.exports = {
   getUserProfile,
   updateUserProfile,
+  getMyPosts,
 };

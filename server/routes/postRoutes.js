@@ -6,7 +6,12 @@ const {
   getPosts,
 } = require("../controllers/postController");
 
-router.post("/", createPost);
+const {
+  protect,
+} = require("../middleware/authMiddleware");
+
+
+router.post("/", protect, createPost);
 router.get("/", getPosts);
 
 module.exports = router;

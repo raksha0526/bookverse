@@ -8,11 +8,12 @@ import Profile from "./pages/Profile";
 import EditProfile from "./pages/EditProfile";
 import VerifyOtp from "./pages/VerifyOtp";
 import PrivateRoute from "./components/PrivateRoute";
-
+import Navbar from "./components/Navbar";
 
 function App() {
   return (
     <BrowserRouter>
+      <Navbar />
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/login" element={<Login />} />
@@ -40,8 +41,9 @@ function App() {
   path="/verify-otp"
   element={<VerifyOtp />}
 />
-
+  
       </Routes>
+          
     </BrowserRouter>
   );
 }

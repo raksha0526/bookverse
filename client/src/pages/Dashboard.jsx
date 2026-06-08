@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { getPosts, createPost } from "../api/post";
+import { getMyPosts, createPost } from "../api/post";
 import { Link, useNavigate } from "react-router-dom";
 
 export default function Dashboard() {
@@ -13,14 +13,15 @@ export default function Dashboard() {
   const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
 
-  const fetchPosts = async () => {
-    try {
-      const data = await getPosts();
-      setPosts(data);
-    } catch (error) {
-      console.log(error);
-    }
-  };
+ const fetchPosts = async () => {
+  const data = await getMyPosts();
+
+  const myPosts = data.filter(
+    (post) => post.author?._id === user._id
+  );
+
+  setPosts(data);
+};
 
   useEffect(() => {
     fetchPosts();
@@ -54,12 +55,7 @@ const handleLogout = () => {
   return (
     <div className="max-w-4xl mx-auto p-6">
       {/* Back Button */}
-      <button
-        onClick={() => navigate(-1)}
-        className="mb-4 bg-gray-200 px-4 py-2 rounded hover:bg-gray-300"
-      >
-        ← Back
-      </button>
+      
 
       {/* Header */}
       <div className="flex justify-between items-center mb-6">

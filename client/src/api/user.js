@@ -12,10 +12,19 @@ export const updateProfile = async (
   id,
   userData
 ) => {
-  const res = await axios.put(
-    `http://localhost:5000/api/users/${id}`,
-    userData
-  );
+ const user = JSON.parse(
+  localStorage.getItem("userInfo")
+);
+
+const res = await axios.put(
+  `http://localhost:5000/api/users/${id}`,
+  userData,
+  {
+    headers: {
+      Authorization: `Bearer ${user.token}`,
+    },
+  }
+);
 
   return res.data;
 };

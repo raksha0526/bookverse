@@ -1,32 +1,14 @@
 import { Link } from "react-router-dom";
 
 export default function Home() {
+
+  const user = JSON.parse(
+    localStorage.getItem("userInfo")
+  );
+
   return (
     <div className="min-h-screen bg-slate-50">
-      {/* Navbar */}
-      <nav className="flex items-center justify-between px-8 py-5 bg-white shadow-sm">
-        <h1 className="text-2xl font-bold text-indigo-600">
-          BookVerse 📚
-        </h1>
-
-        <div className="flex gap-6">
-          <Link to="/" className="hover:text-indigo-600">
-            Home
-          </Link>
-
-          <Link to="/explore" className="hover:text-indigo-600">
-            Explore
-          </Link>
-
-          <Link to="/register" className="hover:text-indigo-600">
-            Register
-          </Link>
-
-          <Link to="/login" className="hover:text-indigo-600">
-            Login
-          </Link>
-        </div>
-      </nav>
+     
 
       {/* Hero Section */}
       <section className="text-center py-24 px-6">
@@ -48,12 +30,21 @@ export default function Home() {
             Explore Reviews
           </Link>
 
-          <Link
-            to="/register"
-            className="border border-indigo-600 text-indigo-600 px-6 py-3 rounded-lg hover:bg-indigo-50 transition"
-          >
-            Sign Up
-          </Link>
+          {!user ? (
+  <Link
+    to="/register"
+    className="border border-indigo-600 text-indigo-600 px-6 py-3 rounded-lg hover:bg-indigo-50 transition"
+  >
+    Sign Up
+  </Link>
+) : (
+  <Link
+    to="/dashboard"
+    className="border border-indigo-600 text-indigo-600 px-6 py-3 rounded-lg hover:bg-indigo-50 transition"
+  >
+    My Dashboard
+  </Link>
+)}
         </div>
       </section>
 

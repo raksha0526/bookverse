@@ -27,7 +27,7 @@ export default function VerifyOtp() {
       "pendingEmail"
     );
 
-    navigate("/dashboard");
+    navigate("/");
   };
 
   return (
