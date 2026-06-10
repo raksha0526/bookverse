@@ -5,6 +5,8 @@ const dotenv = require("dotenv");
 const connectDB = require("./config/db");
 const authRoutes = require("./routes/authRoutes");
 const userRoutes = require("./routes/userRoutes");
+const notificationRoutes =
+  require("./routes/notificationRoutes");
 dotenv.config();
 
 connectDB();
@@ -16,6 +18,11 @@ app.use(express.json());
 app.use("/api/auth", authRoutes);
 app.use("/api/posts", postRoutes);
 app.use("/api/users", userRoutes);
+app.use(
+  "/api/notifications",
+  notificationRoutes
+);
+
 
 app.get("/", (req, res) => {
   res.send("BookVerse API Running 🚀");

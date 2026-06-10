@@ -10,6 +10,8 @@ import VerifyOtp from "./pages/VerifyOtp";
 import PrivateRoute from "./components/PrivateRoute";
 import Navbar from "./components/Navbar";
 
+import Notifications from "./pages/Notifications";
+
 function App() {
   return (
     <BrowserRouter>
@@ -40,6 +42,11 @@ function App() {
 <Route
   path="/verify-otp"
   element={<VerifyOtp />}
+/>
+
+<Route
+  path="/notifications"
+  element={<Notifications />}
 />
   
       </Routes>

@@ -39,7 +39,93 @@ export const createPost = async (
   return res.data;
 };
 
+export const addComment = async (
+  postId,
+  text
+) => {
+  const user = JSON.parse(
+    localStorage.getItem("userInfo")
+  );
+
+  const res = await axios.put(
+    `${API}/${postId}/comment`,
+    { text },
+    {
+      headers: {
+        Authorization: `Bearer ${user.token}`,
+      },
+    }
+  );
+
+  return res.data;
+};
+
 export const getPosts = async () => {
   const res = await axios.get(API);
+  return res.data;
+};
+
+
+
+export const deletePost = async (
+  postId
+) => {
+  const user = JSON.parse(
+    localStorage.getItem("userInfo")
+  );
+
+  const res = await axios.delete(
+    `${API}/${postId}`,
+    {
+      headers: {
+        Authorization: `Bearer ${user.token}`,
+      },
+    }
+  );
+
+  return res.data;
+};
+
+
+export const likePost = async (
+postId
+) => {
+const user = JSON.parse(
+localStorage.getItem("userInfo")
+);
+
+const res = await axios.post(
+`${API}/${postId}/like`,
+{},
+{
+headers: {
+Authorization: `Bearer ${user.token}`,
+},
+}
+);
+
+return res.data;
+};
+
+export const updatePost = async (
+  postId,
+  postData
+) => {
+  const user = JSON.parse(
+    localStorage.getItem(
+      "userInfo"
+    )
+  );
+
+  const res = await axios.put(
+    `${API}/${postId}`,
+    postData,
+    {
+      headers: {
+        Authorization: `Bearer ${user.token}`,
+      },
+    }
+  );
+
   return res.data;
 };

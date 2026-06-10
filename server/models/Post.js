@@ -17,14 +17,38 @@ const postSchema = new mongoose.Schema(
       ref: "User",
     },
 
-    likes: [
+    comments: [
       {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: "User",
+        user: {
+          type: mongoose.Schema.Types.ObjectId,
+          ref: "User",
+        },
+
+        text: {
+          type: String,
+          required: true,
+        },
+
+        createdAt: {
+          type: Date,
+          default: Date.now,
+        },
       },
     ],
+
+
+likes: [
+  {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "User",
   },
-  { timestamps: true }
+],
+
+
+  },
+  {
+    timestamps: true,
+  }
 );
 
 module.exports = mongoose.model(
