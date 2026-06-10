@@ -9,8 +9,9 @@ import { Link } from "react-router-dom";
 export default function Explore() {
 const [posts, setPosts] = useState([]);
 const [commentText, setCommentText] =
-useState({});
-
+  useState({});
+const [search, setSearch] =
+  useState("");
 
 const fetchPosts = async () => {
 try {
@@ -24,6 +25,20 @@ console.log(error);
 useEffect(() => {
 fetchPosts();
 }, []);
+
+const filteredPosts = posts.filter(
+  (post) =>
+    post.title
+      ?.toLowerCase()
+      .includes(search.toLowerCase()) ||
+    post.content
+      ?.toLowerCase()
+      .includes(search.toLowerCase()) ||
+    post.author?.username
+      ?.toLowerCase()
+      .includes(search.toLowerCase())
+);
+
 
 const handleComment = async (
 postId
@@ -63,10 +78,23 @@ console.log(error);
 return ( <div className="max-w-5xl mx-auto p-6"> <h1 className="text-4xl font-bold mb-6">
 Explore Reviews </h1>
 
-  {posts.length === 0 ? (
-    <p>No reviews found.</p>
-  ) : (
-    posts.map((post) => (
+<input
+  type="text"
+  placeholder="🔍 Search reviews, books, users..."
+  value={search}
+  onChange={(e) =>
+    setSearch(e.target.value)
+  }
+  className="w-full border p-3 rounded mb-6"
+/>
+
+
+  {filteredPosts.length === 0 ? (
+  <p className="text-gray-500">
+    No reviews found.
+  </p>
+) : (
+  filteredPosts.map((post) => (
       <div
         key={post._id}
         className="bg-white shadow rounded p-4 mb-6"
