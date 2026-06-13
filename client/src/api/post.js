@@ -135,3 +135,13 @@ export const updatePost = async (
 
   return res.data;
 };
+
+export const getPostById = async (
+  postId
+) => {
+  const res = await axios.get(
+    `${API}/${postId}`
+  );
+
+  return res.data;
+};

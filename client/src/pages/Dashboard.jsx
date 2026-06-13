@@ -171,7 +171,23 @@ navigate("/");
 
 };
 
-return ( <div className="max-w-4xl mx-auto p-6"> <div className="flex justify-between items-center mb-6"> <h1 className="text-4xl font-bold">
+const totalReviews = posts.length;
+
+const totalLikes = posts.reduce(
+  (sum, post) =>
+    sum + (post.likes?.length || 0),
+  0
+);
+
+const totalComments = posts.reduce(
+  (sum, post) =>
+    sum + (post.comments?.length || 0),
+  0
+);
+
+
+
+return (<div className="max-w-6xl mx-auto p-4 md:p-6"> <div className="flex justify-between items-center mb-6"> <h1 className="text-4xl font-bold">
 📚 My Dashboard </h1>
 
 
@@ -184,7 +200,13 @@ return ( <div className="max-w-4xl mx-auto p-6"> <div className="flex justify-be
   </div>
 
   {/* CREATE REVIEW */}
-  <div className="bg-white shadow p-4 rounded mb-8">
+  <div className="
+bg-white
+shadow-lg
+rounded-xl
+p-6
+mb-8
+">
     <h2 className="text-xl font-bold mb-3">
       Create Review
     </h2>
@@ -256,129 +278,220 @@ return ( <div className="max-w-4xl mx-auto p-6"> <div className="flex justify-be
     </form>
   </div>
 
-  <h2 className="text-2xl font-bold mb-4">
-    My Reviews
-  </h2>
 
-  {posts.length === 0 ? (
-    <p className="text-gray-500">
-      No reviews yet.
+
+
+<div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8">
+  <div className="bg-blue-500 text-white p-5 rounded-xl shadow">
+    <h3 className="text-lg font-semibold">
+      Reviews
+    </h3>
+    <p className="text-3xl font-bold">
+      {totalReviews}
     </p>
-  ) : (
-    posts.map((post) => (
+  </div>
+
+  <div className="bg-pink-500 text-white p-5 rounded-xl shadow">
+    <h3 className="text-lg font-semibold">
+      Likes
+    </h3>
+    <p className="text-3xl font-bold">
+      {totalLikes}
+    </p>
+  </div>
+
+  <div className="bg-green-500 text-white p-5 rounded-xl shadow">
+    <h3 className="text-lg font-semibold">
+      Comments
+    </h3>
+    <p className="text-3xl font-bold">
+      {totalComments}
+    </p>
+  </div>
+</div>
+<h2 className="text-2xl font-bold mb-4">
+  My Reviews
+</h2>
+
+{posts.length === 0 ? (
+  <p className="text-gray-500">
+    No reviews yet.
+  </p>
+) : (
+  <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+    {posts.map((post) => (
       <div
         key={post._id}
-        className="bg-white shadow rounded p-4 mb-4"
+        className="
+        bg-white
+        rounded-xl
+        shadow-md
+        hover:shadow-xl
+        transition
+        duration-300
+        overflow-hidden
+        "
       >
-
-{post.coverImage && (
-  <img
-    src={`http://localhost:5000${post.coverImage}`}
-    alt={post.title}
-    className="w-full h-64 object-cover rounded mb-4"
-  />
-)}
-        
-        <h2 className="text-2xl font-bold">
-          📖 {post.title}
-        </h2>
-
-        <p className="inline-block bg-indigo-100 text-indigo-700 px-2 py-1 rounded text-sm mt-2">
-              {post.category}
-       </p>
-
-        <p className="text-gray-500 mb-2">
-          by{" "}
-          <Link
-            to={`/profile/${post.author?._id}`}
-            className="text-blue-600 hover:underline"
-          >
-            {post.author?.username}
-          </Link>
-        </p>
-
-        <p>{post.content}</p>
-
-        {/* EDIT FORM */}
-        {editingId ===
-          post._id && (
-          <div className="mt-4">
-            <input
-              type="text"
-              value={editTitle}
-              onChange={(e) =>
-                setEditTitle(
-                  e.target.value
-                )
-              }
-              className="border p-2 w-full mb-2 rounded"
-            />
-
-            <textarea
-              value={editContent}
-              onChange={(e) =>
-                setEditContent(
-                  e.target.value
-                )
-              }
-              className="border p-2 w-full mb-2 rounded"
-              rows="4"
-            />
-
-            <input
-  type="file"
-  accept="image/*"
-  onChange={(e) =>
-    setEditImage(
-      e.target.files[0]
-    )
-  }
-/>
-
-            <button
-              onClick={
-                handleUpdate
-              }
-              className="bg-green-600 text-white px-3 py-1 rounded"
-            >
-              Save Changes
-            </button>
-          </div>
+        {post.coverImage && (
+          <img
+            src={`http://localhost:5000${post.coverImage}`}
+            alt={post.title}
+            className="
+            w-full
+            h-60
+            object-cover
+            "
+          />
         )}
 
-        <div className="mt-4 flex gap-2">
-          <button
-            onClick={() => {
-              setEditingId(
-                post._id
-              );
-              setEditTitle(
-                post.title
-              );
-              setEditContent(
-                post.content
-              );
-            }}
-            className="bg-yellow-500 text-white px-3 py-1 rounded hover:bg-yellow-600"
-          >
-            Edit
-          </button>
+        <div className="p-5">
+          <h2 className="text-2xl font-bold mb-2">
+            📖 {post.title}
+          </h2>
 
-          <button
-            onClick={() =>
-              handleDelete(
-                post._id
-              )
-            }
-            className="bg-red-600 text-white px-3 py-1 rounded hover:bg-red-700"
+          <span
+            className="
+            inline-block
+            bg-indigo-100
+            text-indigo-700
+            px-3
+            py-1
+            rounded-full
+            text-sm
+            mb-3
+            "
           >
-            Delete Review
-          </button>
+            {post.category}
+          </span>
+
+          <p className="text-gray-500 mb-3">
+            by{" "}
+            <Link
+              to={`/profile/${post.author?._id}`}
+              className="text-blue-600 hover:underline"
+            >
+              {post.author?.username}
+            </Link>
+          </p>
+
+          <p className="mb-4">
+            {post.content}
+          </p>
+
+          <div className="flex gap-4 text-sm text-gray-600 mb-4">
+            <span>
+              ❤️ {post.likes?.length || 0}
+            </span>
+
+            <span>
+              💬 {post.comments?.length || 0}
+            </span>
+          </div>
+
+          {editingId === post._id && (
+            <div className="mt-4 border-t pt-4">
+              <input
+                type="text"
+                value={editTitle}
+                onChange={(e) =>
+                  setEditTitle(e.target.value)
+                }
+                className="border p-2 w-full mb-2 rounded"
+              />
+
+              <textarea
+                value={editContent}
+                onChange={(e) =>
+                  setEditContent(e.target.value)
+                }
+                rows="4"
+                className="border p-2 w-full mb-2 rounded"
+              />
+
+              <input
+                type="file"
+                accept="image/*"
+                onChange={(e) =>
+                  setEditImage(
+                    e.target.files[0]
+                  )
+                }
+                className="mb-3"
+              />
+
+              <div className="flex gap-2">
+                <button
+                  onClick={handleUpdate}
+                  className="
+                  bg-green-600
+                  text-white
+                  px-4
+                  py-2
+                  rounded-lg
+                  hover:bg-green-700
+                  "
+                >
+                  Save
+                </button>
+
+                <button
+                  onClick={() =>
+                    setEditingId(null)
+                  }
+                  className="
+                  bg-gray-500
+                  text-white
+                  px-4
+                  py-2
+                  rounded-lg
+                  hover:bg-gray-600
+                  "
+                >
+                  Cancel
+                </button>
+              </div>
+            </div>
+          )}
+
+          <div className="mt-4 flex gap-2">
+            <button
+              onClick={() => {
+                setEditingId(post._id);
+                setEditTitle(post.title);
+                setEditContent(post.content);
+              }}
+              className="
+              bg-yellow-500
+              text-white
+              px-4
+              py-2
+              rounded-lg
+              hover:bg-yellow-600
+              "
+            >
+              Edit
+            </button>
+
+            <button
+              onClick={() =>
+                handleDelete(post._id)
+              }
+              className="
+              bg-red-600
+              text-white
+              px-4
+              py-2
+              rounded-lg
+              hover:bg-red-700
+              "
+            >
+              Delete
+            </button>
+          </div>
         </div>
       </div>
-    ))
-  )}
+    ))}
+  </div>
+)}
 </div>
-
-);
-}
+);}

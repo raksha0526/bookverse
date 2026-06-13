@@ -9,7 +9,7 @@ import EditProfile from "./pages/EditProfile";
 import VerifyOtp from "./pages/VerifyOtp";
 import PrivateRoute from "./components/PrivateRoute";
 import Navbar from "./components/Navbar";
-
+import ReviewDetails from "./pages/ReviewDetails";
 import Notifications from "./pages/Notifications";
 
 function App() {
@@ -42,6 +42,11 @@ function App() {
 <Route
   path="/verify-otp"
   element={<VerifyOtp />}
+/>
+
+<Route
+  path="/review/:id"
+  element={<ReviewDetails />}
 />
 
 <Route

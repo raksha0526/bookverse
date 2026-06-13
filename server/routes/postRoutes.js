@@ -11,6 +11,7 @@ const {
   addComment,
   deletePost,
   likePost,
+  getPostById,
   updatePost,
 } = require("../controllers/postController");
 
@@ -26,6 +27,13 @@ router.post(
   createPost
 );
 router.get("/", getPosts);
+
+router.get(
+  "/:id",
+  getPostById
+);
+
+
 router.put(
   "/:id/comment",
   protect,

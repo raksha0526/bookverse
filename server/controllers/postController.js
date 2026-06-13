@@ -1,6 +1,7 @@
 const Post = require("../models/Post");
 const Notification = require("../models/Notification");
-
+const fs = require("fs");
+const path = require("path");
 const createPost = async (req, res) => {
   try {
     const post = await Post.create({
@@ -111,6 +112,27 @@ const deletePost = async (req, res) => {
       });
     }
 
+if (post.coverImage) {
+  const imagePath = path.join(
+    __dirname,
+    "..",
+    post.coverImage
+  );
+
+  fs.unlink(
+    imagePath,
+    (err) => {
+      if (err) {
+        console.log(
+          "Image delete error:",
+          err.message
+        );
+      }
+    }
+  );
+}
+
+
     await post.deleteOne();
 
     res.json({
@@ -209,8 +231,28 @@ const updatePost = async (req, res) => {
     post.content =
       req.body.content ||
       post.content;
+if (req.file) {
+  // delete old image
+  if (post.coverImage) {
+    const oldImagePath = path.join(
+      __dirname,
+      "..",
+      post.coverImage
+    );
 
-      if (req.file) {
+    fs.unlink(
+      oldImagePath,
+      (err) => {
+        if (err) {
+          console.log(
+            "Old image delete error:",
+            err.message
+          );
+        }
+      }
+    );
+  }
+
   post.coverImage =
     `/uploads/${req.file.filename}`;
 }
@@ -226,6 +268,42 @@ const updatePost = async (req, res) => {
   }
 };
 
+const getPostById = async (
+  req,
+  res
+) => {
+  try {
+    const post =
+      await Post.findById(
+        req.params.id
+      )
+        .populate(
+          "author",
+          "username"
+        )
+        .populate(
+          "comments.user",
+          "username"
+        );
+
+    if (!post) {
+      return res
+        .status(404)
+        .json({
+          message:
+            "Post not found",
+        });
+    }
+
+    res.json(post);
+  } catch (error) {
+    res.status(500).json({
+      message:
+        error.message,
+    });
+  }
+};
+
 
 module.exports = {
   createPost,
@@ -234,4 +312,5 @@ module.exports = {
   addComment,
   deletePost,
   likePost,
+  getPostById,
 };
