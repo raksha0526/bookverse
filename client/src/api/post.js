@@ -23,7 +23,9 @@ export const createPost = async (
   postData
 ) => {
   const user = JSON.parse(
-    localStorage.getItem("userInfo")
+    localStorage.getItem(
+      "userInfo"
+    )
   );
 
   const res = await axios.post(
@@ -32,6 +34,8 @@ export const createPost = async (
     {
       headers: {
         Authorization: `Bearer ${user.token}`,
+        "Content-Type":
+          "multipart/form-data",
       },
     }
   );
@@ -123,6 +127,8 @@ export const updatePost = async (
     {
       headers: {
         Authorization: `Bearer ${user.token}`,
+        "Content-Type":
+          "multipart/form-data",
       },
     }
   );

@@ -1,6 +1,10 @@
 const express = require("express");
 const router = express.Router();
 
+const upload = require(
+  "../middleware/uploadMiddleware"
+);
+
 const {
   createPost,
   getPosts,
@@ -15,7 +19,12 @@ const {
 } = require("../middleware/authMiddleware");
 
 
-router.post("/", protect, createPost);
+router.post(
+  "/",
+  protect,
+  upload.single("coverImage"),
+  createPost
+);
 router.get("/", getPosts);
 router.put(
   "/:id/comment",
@@ -35,6 +44,7 @@ router.post(
 router.put(
   "/:id",
   protect,
+  upload.single("coverImage"),
   updatePost
 );
 

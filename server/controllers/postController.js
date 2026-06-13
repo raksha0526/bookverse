@@ -3,12 +3,15 @@ const Notification = require("../models/Notification");
 
 const createPost = async (req, res) => {
   try {
-    const { title, content, author } = req.body;
-
     const post = await Post.create({
-      title,
-      content,
-      author,
+      title: req.body.title,
+      content: req.body.content,
+      category: req.body.category,
+      author: req.user._id,
+
+      coverImage: req.file
+        ? `/uploads/${req.file.filename}`
+        : "",
     });
 
     res.status(201).json(post);
@@ -206,6 +209,11 @@ const updatePost = async (req, res) => {
     post.content =
       req.body.content ||
       post.content;
+
+      if (req.file) {
+  post.coverImage =
+    `/uploads/${req.file.filename}`;
+}
 
     const updatedPost =
       await post.save();

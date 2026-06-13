@@ -99,9 +99,22 @@ Explore Reviews </h1>
         key={post._id}
         className="bg-white shadow rounded p-4 mb-6"
       >
+
+{post.coverImage && (
+  <img
+    src={`http://localhost:5000${post.coverImage}`}
+    alt={post.title}
+    className="w-full h-64 object-cover rounded mb-4"
+  />
+)}
+
         <h2 className="text-2xl font-bold">
           📖 {post.title}
         </h2>
+
+        <p className="inline-block bg-indigo-100 text-indigo-700 px-2 py-1 rounded text-sm mt-2">
+              {post.category}
+        </p>
 
         <p className="text-gray-500 mb-2">
           by{" "}

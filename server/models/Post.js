@@ -12,6 +12,16 @@ const postSchema = new mongoose.Schema(
       required: true,
     },
 
+    category: {
+    type: String,
+    default: "General",
+    },
+
+    coverImage: {
+    type: String,
+    default: "",
+    },
+
     author: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "User",

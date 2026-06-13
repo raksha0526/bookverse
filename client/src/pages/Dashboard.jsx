@@ -18,6 +18,14 @@ const [posts, setPosts] = useState([]);
 const [title, setTitle] = useState("");
 const [content, setContent] = useState("");
 
+const [category, setCategory] =
+  useState("Fantasy");
+
+
+const [coverImage,
+  setCoverImage] =
+  useState(null);
+
 const [editingId, setEditingId] =
 useState(null);
 
@@ -26,6 +34,11 @@ useState("");
 
 const [editContent, setEditContent] =
 useState("");
+
+const [
+  editImage,
+  setEditImage,
+] = useState(null);
 
 const fetchPosts = async () => {
 try {
@@ -43,12 +56,36 @@ fetchPosts();
 const handleSubmit = async (e) => {
 e.preventDefault();
 
+
+
+
 try {
-  await createPost({
-    title,
-    content,
-    author: user._id,
-  });
+const formData =
+  new FormData();
+
+formData.append(
+  "title",
+  title
+);
+
+formData.append(
+  "content",
+  content
+);
+
+formData.append(
+  "category",
+  category
+);
+
+if (coverImage) {
+  formData.append(
+    "coverImage",
+    coverImage
+  );
+}
+
+await createPost(formData);
 
   setTitle("");
   setContent("");
@@ -63,12 +100,29 @@ try {
 
 const handleUpdate = async () => {
 try {
-await updatePost(
-editingId,
-{
-title: editTitle,
-content: editContent,
+const formData =
+  new FormData();
+
+formData.append(
+  "title",
+  editTitle
+);
+
+formData.append(
+  "content",
+  editContent
+);
+
+if (editImage) {
+  formData.append(
+    "coverImage",
+    editImage
+  );
 }
+
+await updatePost(
+  editingId,
+  formData
 );
 
 
@@ -135,6 +189,10 @@ return ( <div className="max-w-4xl mx-auto p-6"> <div className="flex justify-be
       Create Review
     </h2>
 
+
+
+
+
     <form onSubmit={handleSubmit}>
       <input
         type="text"
@@ -148,6 +206,33 @@ return ( <div className="max-w-4xl mx-auto p-6"> <div className="flex justify-be
         }
         required
       />
+
+<select
+  value={category}
+  onChange={(e) =>
+    setCategory(e.target.value)
+  }
+  className="border p-2 w-full mb-3 rounded"
+>
+  <option>Fantasy</option>
+  <option>Romance</option>
+  <option>Sci-Fi</option>
+  <option>Mystery</option>
+  <option>Self Help</option>
+  <option>Biography</option>
+</select>
+
+<input
+  type="file"
+  accept="image/*"
+  onChange={(e) =>
+    setCoverImage(
+      e.target.files[0]
+    )
+  }
+  className="mb-3"
+/>
+
 
       <textarea
         placeholder="Write your review..."
@@ -185,9 +270,22 @@ return ( <div className="max-w-4xl mx-auto p-6"> <div className="flex justify-be
         key={post._id}
         className="bg-white shadow rounded p-4 mb-4"
       >
+
+{post.coverImage && (
+  <img
+    src={`http://localhost:5000${post.coverImage}`}
+    alt={post.title}
+    className="w-full h-64 object-cover rounded mb-4"
+  />
+)}
+        
         <h2 className="text-2xl font-bold">
           📖 {post.title}
         </h2>
+
+        <p className="inline-block bg-indigo-100 text-indigo-700 px-2 py-1 rounded text-sm mt-2">
+              {post.category}
+       </p>
 
         <p className="text-gray-500 mb-2">
           by{" "}
@@ -226,6 +324,16 @@ return ( <div className="max-w-4xl mx-auto p-6"> <div className="flex justify-be
               className="border p-2 w-full mb-2 rounded"
               rows="4"
             />
+
+            <input
+  type="file"
+  accept="image/*"
+  onChange={(e) =>
+    setEditImage(
+      e.target.files[0]
+    )
+  }
+/>
 
             <button
               onClick={
