@@ -126,9 +126,14 @@ return (
               />
             )}
 
-            <h2 className="text-2xl font-bold">
-              📖 {post.title}
-            </h2>
+           <Link
+  to={`/review/${post._id}`}
+  className="hover:text-blue-600"
+>
+  <h2 className="text-2xl font-bold">
+    📖 {post.title}
+  </h2>
+</Link>
 
             <p className="inline-block bg-indigo-100 text-indigo-700 px-2 py-1 rounded text-sm mt-2 mb-2">
               {post.category}

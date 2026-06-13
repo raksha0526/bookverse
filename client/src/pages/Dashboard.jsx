@@ -374,9 +374,24 @@ mb-8
             </Link>
           </p>
 
-          <p className="mb-4">
-            {post.content}
-          </p>
+          <p>
+  {post.content.length > 120
+    ? `${post.content.slice(0, 120)}...`
+    : post.content}
+</p>
+
+<Link
+  to={`/review/${post._id}`}
+  className="
+  text-blue-600
+  font-semibold
+  hover:underline
+  mt-2
+  inline-block
+  "
+>
+  Read More →
+</Link>
 
           <div className="flex gap-4 text-sm text-gray-600 mb-4">
             <span>
